@@ -1,53 +1,219 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>ACCESS SYSTEM</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Virtual Gold Terminal</title>
+
+<style>
+body{
+    margin:0;
+    background:black;
+    color:#00ff00;
+    font-family:monospace;
+}
+
+.container{
+    max-width:800px;
+    margin:30px auto;
+    padding:20px;
+}
+
+h1,h2,h3{
+    text-align:center;
+}
+
+a{
+    color:#00ff00;
+}
+
+input, button{
+    background:black;
+    border:1px solid #00ff00;
+    color:#00ff00;
+    padding:10px;
+    margin-top:10px;
+    width:100%;
+}
+
+button:hover{
+    background:#003300;
+    cursor:pointer;
+}
+
+.instructions{
+    border:1px solid #00ff00;
+    padding:15px;
+    margin-bottom:20px;
+}
+
+.preview img{
+    max-width:120px;
+    margin:5px;
+    border:1px solid #00ff00;
+}
+
+.hidden{
+    display:none;
+}
+
+#timer{
+    position:fixed;
+    top:10px;
+    right:20px;
+    font-size:18px;
+}
+
+table{
+    width:100%;
+    margin-top:20px;
+    border-collapse:collapse;
+}
+
+td{
+    border:1px solid #00ff00;
+    height:60px;
+    text-align:center;
+}
+
+.gold{
+    background:gold;
+    color:black;
+    font-weight:bold;
+}
+</style>
 </head>
-<body class="hacker">
 
-<div class="login-box">
+<body>
 
-  <h2>التعليمات</h2>
+<div id="timer" class="hidden"></div>
 
-  <p>
-    تسجيل في Linebet عبر الرابط:
-    <br>
-    <a href="https://marocco.bonus-linebet.com/arb212?utm_source=ig&utm_medium=social&utm_content=link_in_bio" target="_blank">
-      اضغط هنا للتسجيل
-    </a>
-  </p>
+<div class="container" id="home">
 
-  <p>إيداع مبلغ لا يقل عن 100 درهم</p>
+<h1>VIRTUAL GOLD TERMINAL</h1>
 
-  <p>
-    قم بإرسال:
-    <br>• سكرين التسجيل
-    <br>• سكرين الإيداع
-    <br>• سكرين ID
-  </p>
+<div class="instructions">
+<p>سجّل عبر الرابط التالي:</p>
 
-  <hr style="margin:20px 0; border-color:#00ff00;">
+<p>
+<a href="https://marocco.bonus-linebet.com/arb212?utm_source=ig&utm_medium=social&utm_content=link_in_bio" target="_blank">
+اضغط هنا للتسجيل
+</a>
+</p>
 
-  <h3>أدخل ID الخاص بك لتفعيل السكريبت</h3>
+<p>من بعد ما تكمل التسجيل دير سكرين للتسجيل و الـ ID ديالك.</p>
 
-  <input type="text" id="code" maxlength="10" placeholder="ENTER YOUR 10 DIGIT ID">
+<p>دخل الـ ID ديالك فبلاصة الكود باش يخدم لك السكريبت.</p>
 
-  <br><br>
+<p>🎮 Bon jeu</p>
+</div>
 
-  <label>تحميل صور الإثبات:</label>
-  <br><br>
-  <input type="file" id="screenshots" multiple accept="image/*">
+<h3>🔐 Enter Your 10 Digit ID</h3>
+<input type="text" id="userId" maxlength="10" placeholder="Enter ID">
+<button onclick="accessPlatform()">ACCESS</button>
 
-  <div id="preview"></div>
-
-  <br>
-
-  <button onclick="checkCode()">تفعيل</button>
+<h3>📸 Upload Your Score Screenshots</h3>
+<input type="file" id="photoUpload" multiple accept="image/*">
+<div class="preview" id="preview"></div>
 
 </div>
 
-<script src="script.js"></script>
+<div class="container hidden" id="platform">
+
+<h2>PLATFORM ACCESS GRANTED ✅</h2>
+
+<button onclick="showGold()">إظهار الذهب</button>
+
+<table id="grid"></table>
+
+</div>
+
+<script>
+
+// ===== IMAGE PREVIEW =====
+document.getElementById("photoUpload").addEventListener("change", function(event){
+    let preview = document.getElementById("preview");
+    preview.innerHTML = "";
+
+    for(let file of event.target.files){
+        let reader = new FileReader();
+        reader.onload = function(e){
+            let img = document.createElement("img");
+            img.src = e.target.result;
+            preview.appendChild(img);
+        }
+        reader.readAsDataURL(file);
+    }
+});
+
+// ===== ACCESS =====
+function accessPlatform(){
+    let id = document.getElementById("userId").value;
+
+    if(id.length === 10 && !isNaN(id)){
+        document.getElementById("home").classList.add("hidden");
+        document.getElementById("platform").classList.remove("hidden");
+        document.getElementById("timer").classList.remove("hidden");
+
+        createGrid();
+        startTimer();
+    } else {
+        alert("Invalid ID (10 digits required)");
+    }
+}
+
+// ===== GRID =====
+function createGrid(){
+    let table = document.getElementById("grid");
+    table.innerHTML = "";
+
+    for(let i=0;i<6;i++){
+        let row = table.insertRow();
+        for(let j=0;j<2;j++){
+            row.insertCell();
+        }
+    }
+}
+
+// ===== RANDOM GOLD =====
+function showGold(){
+    createGrid();
+
+    let table = document.getElementById("grid");
+
+    for(let i=0;i<6;i++){
+        let randomCol = Math.floor(Math.random()*2);
+        let cell = table.rows[i].cells[randomCol];
+        cell.classList.add("gold");
+        cell.innerText = "GOLD";
+    }
+}
+
+// ===== TIMER 2H =====
+function startTimer(){
+    let duration = 2 * 60 * 60;
+    let display = document.getElementById("timer");
+
+    let countdown = setInterval(function(){
+
+        let hours = Math.floor(duration/3600);
+        let minutes = Math.floor((duration%3600)/60);
+        let seconds = duration%60;
+
+        display.innerText = hours + "h " + minutes + "m " + seconds + "s";
+
+        duration--;
+
+        if(duration < 0){
+            clearInterval(countdown);
+            alert("Session expired");
+            location.reload();
+        }
+
+    },1000);
+}
+
+</script>
+
 </body>
 </html>
